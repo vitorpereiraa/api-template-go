@@ -1,7 +1,10 @@
 package repositories
 
 import (
+	"errors"
+
 	"github.com/vitorpereira/api-template-go/domain"
+	"golang.org/x/exp/slices"
 )
 
 var todoListRepository []domain.TodoList
@@ -16,6 +19,32 @@ func init() {
 	todoListRepository = append(todoListRepository, todoList)
 }
 
-func GetTodoLists() []domain.TodoList {
+func FindTodoLists() []domain.TodoList {
 	return todoListRepository
+}
+
+func FindTodoListByID(id string) (domain.TodoList, error) {
+	for i := 0; i < len(todoListRepository); i++ {
+		if todoListRepository[i].ID() == id {
+			return todoListRepository[i], nil
+		}
+	}
+	return domain.TodoList{}, errors.New("Todo List Not Found")
+}
+
+func CreateTodoList(todoList domain.TodoList) domain.TodoList {
+	todoListRepository = append(todoListRepository, todoList)
+	return todoList
+}
+
+func DeleteTodoListByID(id string) (domain.TodoList, error) {
+
+	for i := 0; i < len(todoListRepository); i++ {
+		if todoListRepository[i].ID() == id {
+			todoListRepository = slices.Delete(todoListRepository, i, i+1)
+			return todoListRepository[i], nil
+		}
+	}
+
+	return domain.TodoList{}, errors.New("Todo List Not Found")
 }

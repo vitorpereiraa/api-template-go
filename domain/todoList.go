@@ -1,15 +1,23 @@
 package domain
 
+import "github.com/google/uuid"
+
 type TodoList struct {
+	id          uuid.UUID
 	description string
 	items       []Item
 }
 
 func NewTodoList(descrition string, items []Item) TodoList {
 	return TodoList{
+		id:          uuid.New(),
 		description: descrition,
 		items:       items,
 	}
+}
+
+func (t *TodoList) ID() string {
+	return t.id.String()
 }
 
 func (t *TodoList) Description() string {

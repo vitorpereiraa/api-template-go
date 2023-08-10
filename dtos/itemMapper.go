@@ -15,3 +15,14 @@ func ItemListToDtoList(items []domain.Item) (itemsDto []ItemDTO) {
 	}
 	return
 }
+
+func ItemDtoToItem(itemDto ItemDTO) (Item domain.Item) {
+	return domain.NewItem(itemDto.Description, itemDto.DueDate)
+}
+
+func ItemDtoListToItemList(itemsDto []ItemDTO) (items []domain.Item) {
+	for _, item := range itemsDto {
+		items = append(items, ItemDtoToItem(item))
+	}
+	return
+}
