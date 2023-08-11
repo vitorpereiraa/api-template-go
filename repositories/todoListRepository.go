@@ -4,7 +4,6 @@ import (
 	"errors"
 
 	"github.com/vitorpereira/api-template-go/domain"
-	"golang.org/x/exp/slices"
 )
 
 var todoListRepository []domain.TodoList
@@ -38,13 +37,19 @@ func CreateTodoList(todoList domain.TodoList) domain.TodoList {
 }
 
 func DeleteTodoListByID(id string) (domain.TodoList, error) {
+	var todoList domain.TodoList
 
 	for i := 0; i < len(todoListRepository); i++ {
 		if todoListRepository[i].ID() == id {
-			todoListRepository = slices.Delete(todoListRepository, i, i+1)
-			return todoListRepository[i], nil
+			todoListRepository, todoList = remove(todoListRepository, i)
+			return todoList, nil
 		}
 	}
 
-	return domain.TodoList{}, errors.New("Todo List Not Found")
+	return todoList, errors.New("Todo List Not Found")
+}
+
+func remove(s []domain.TodoList, i int) ([]domain.TodoList, domain.TodoList) {
+	s[i] = s[len(s)-1]
+	return s[:len(s)-1], s[i]
 }
