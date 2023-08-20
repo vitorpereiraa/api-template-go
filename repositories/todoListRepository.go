@@ -6,42 +6,44 @@ import (
 	"github.com/vitorpereira/api-template-go/domain"
 )
 
-var todoListRepository []domain.TodoList
-
-func init() {
-	var items []domain.Item
-
-	items = append(items, domain.NewItem("Do Homework", "Until Tomorrow"))
-
-	var todoList domain.TodoList = domain.NewTodoList("School Todo List", items)
-
-	todoListRepository = append(todoListRepository, todoList)
+type todoListRepository struct {
+	repo []domain.TodoList
 }
 
-func FindTodoLists() []domain.TodoList {
+func NewTodoListRepository() todoListRepository {
+	todoListRepository := todoListRepository{
+		repo: []domain.TodoList{},
+	}
+
+	bootstrap(&todoListRepository)
+
 	return todoListRepository
 }
 
-func FindTodoListByID(id string) (domain.TodoList, error) {
-	for i := 0; i < len(todoListRepository); i++ {
-		if todoListRepository[i].ID() == id {
-			return todoListRepository[i], nil
+func (t *todoListRepository) FindTodoLists() []domain.TodoList {
+	return t.repo
+}
+
+func (t *todoListRepository) FindTodoListByID(id string) (domain.TodoList, error) {
+	for i := 0; i < len(t.repo); i++ {
+		if t.repo[i].ID() == id {
+			return t.repo[i], nil
 		}
 	}
 	return domain.TodoList{}, errors.New("Todo List Not Found")
 }
 
-func CreateTodoList(todoList domain.TodoList) domain.TodoList {
-	todoListRepository = append(todoListRepository, todoList)
-	return todoList
+func (t *todoListRepository) CreateTodoList(todoList domain.TodoList) (domain.TodoList, error) {
+	t.repo = append(t.repo, todoList)
+	return todoList, nil
 }
 
-func DeleteTodoListByID(id string) (domain.TodoList, error) {
+func (t *todoListRepository) DeleteTodoListByID(id string) (domain.TodoList, error) {
 	var todoList domain.TodoList
 
-	for i := 0; i < len(todoListRepository); i++ {
-		if todoListRepository[i].ID() == id {
-			todoListRepository, todoList = remove(todoListRepository, i)
+	for i := 0; i < len(t.repo); i++ {
+		if t.repo[i].ID() == id {
+			t.repo, todoList = remove(t.repo, i)
 			return todoList, nil
 		}
 	}
@@ -52,4 +54,14 @@ func DeleteTodoListByID(id string) (domain.TodoList, error) {
 func remove(s []domain.TodoList, i int) ([]domain.TodoList, domain.TodoList) {
 	s[i] = s[len(s)-1]
 	return s[:len(s)-1], s[i]
+}
+
+func bootstrap(todoListRepository *todoListRepository) {
+	var items []domain.Item
+
+	items = append(items, domain.NewItem("Do Homework", "Until Tomorrow"))
+
+	var todoList domain.TodoList = domain.NewTodoList("School Todo List", items)
+
+	todoListRepository.repo = append(todoListRepository.repo, todoList)
 }

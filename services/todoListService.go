@@ -5,23 +5,33 @@ import (
 	"github.com/vitorpereira/api-template-go/repositories"
 )
 
-func FindTodoLists() []dtos.TodoListDTO {
-	todoLists := repositories.FindTodoLists()
+type TodoListService struct {
+	repo repositories.ITodoListRepository
+}
+
+func NewTodoListService(todoListRepo repositories.ITodoListRepository) *TodoListService {
+	return &TodoListService{
+		repo: todoListRepo,
+	}
+}
+
+func (s TodoListService) FindTodoLists() []dtos.TodoListDTO {
+	todoLists := s.repo.FindTodoLists()
 	return dtos.TodoListListToDtoList(todoLists)
 }
 
-func FindTodoListByID(id string) (dtos.TodoListDTO, error) {
-	todoList, err := repositories.FindTodoListByID(id)
+func (s TodoListService) FindTodoListByID(id string) (dtos.TodoListDTO, error) {
+	todoList, err := s.repo.FindTodoListByID(id)
 	return dtos.TodoListToDto(todoList), err
 }
 
-func CreateTodoList(todoListDTO dtos.TodoListDTO) dtos.TodoListDTO {
+func (s TodoListService) CreateTodoList(todoListDTO dtos.TodoListDTO) (dtos.TodoListDTO, error) {
 	todoList := dtos.TodoListDtoToTodoList(todoListDTO)
-	createdTodoList := repositories.CreateTodoList(todoList)
-	return dtos.TodoListToDto(createdTodoList)
+	createdTodoList, err := s.repo.CreateTodoList(todoList)
+	return dtos.TodoListToDto(createdTodoList), err
 }
 
-func DeleteTodoListByID(id string) (dtos.TodoListDTO, error) {
-	todoList, err := repositories.DeleteTodoListByID(id)
+func (s TodoListService) DeleteTodoListByID(id string) (dtos.TodoListDTO, error) {
+	todoList, err := s.repo.DeleteTodoListByID(id)
 	return dtos.TodoListToDto(todoList), err
 }

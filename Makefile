@@ -1,8 +1,8 @@
 run: clean build
-	./api-template-go 
+	./api-template-go.exe
 
 build:
-	go build .
+	go build -o ./api-template-go.exe
 
 clean:
-	rm -f ./api-template-go ./api-template-go.exe
+	rm -f ./api-template-go.exe 

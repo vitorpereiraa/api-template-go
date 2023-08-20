@@ -20,5 +20,5 @@
 # Go workspace file
 go.work
 
-
-api-template-go
+# Env file
+.env
