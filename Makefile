@@ -6,3 +6,17 @@ build:
 
 clean:
 	rm -f ./api-template-go.exe 
+
+dr: docker-clean docker-build  
+	docker run -d -p 8080:8080 --name api-template-go api-template-go:dev
+
+docker-build: 
+	docker build . -t api-template-go:dev
+
+docker-clean: docker-stop
+	 docker container rm api-template-go || true
+
+docker-stop:
+	docker container stop api-template-go || true
+
+
