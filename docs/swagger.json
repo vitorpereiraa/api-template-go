@@ -1,0 +1,70 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Todo List API",
+        "contact": {}
+    },
+    "paths": {
+        "/todoList": {
+            "post": {
+                "description": "Create a Todo List",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "todoList"
+                ],
+                "summary": "Create todoList",
+                "parameters": [
+                    {
+                        "description": "Create todoList",
+                        "name": "tags",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dtos.TodoListDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.TodoListDTO"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "dtos.ItemDTO": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "duedate": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.TodoListDTO": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dtos.ItemDTO"
+                    }
+                }
+            }
+        }
+    }
+}

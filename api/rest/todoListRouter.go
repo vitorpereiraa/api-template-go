@@ -45,6 +45,14 @@ func (t *todoListRouter) findTodoListByID(ctx *gin.Context) {
 	ctx.IndentedJSON(http.StatusOK, todoList)
 }
 
+// CreateTags		godoc
+// @Summary			Create todoList
+// @Description		Create a Todo List
+// @Param			tags body dtos.TodoListDTO true "Create todoList"
+// @Produce			application/json
+// @Tags			todoList
+// @Success			200 {object} dtos.TodoListDTO
+// @Router			/todoList [post]
 func (t *todoListRouter) createTodoList(ctx *gin.Context) {
 	var todoListDto dtos.TodoListDTO
 

@@ -1,0 +1,44 @@
+definitions:
+  dtos.ItemDTO:
+    properties:
+      description:
+        type: string
+      duedate:
+        type: string
+    type: object
+  dtos.TodoListDTO:
+    properties:
+      description:
+        type: string
+      id:
+        type: string
+      items:
+        items:
+          $ref: '#/definitions/dtos.ItemDTO'
+        type: array
+    type: object
+info:
+  contact: {}
+  title: Todo List API
+paths:
+  /todoList:
+    post:
+      description: Create a Todo List
+      parameters:
+      - description: Create todoList
+        in: body
+        name: tags
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.TodoListDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.TodoListDTO'
+      summary: Create todoList
+      tags:
+      - todoList
+swagger: "2.0"

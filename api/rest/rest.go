@@ -4,12 +4,12 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/vitorpereira/api-template-go/config"
 	"github.com/vitorpereira/api-template-go/repositories"
 	"github.com/vitorpereira/api-template-go/services"
 )
-
-//TODO: Add support for open api definition
 
 func Initialize() {
 	r := gin.Default()
@@ -23,6 +23,7 @@ func Initialize() {
 
 	InitializeTodoListRouter(svc, api)
 
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.Run(config.Settings.SERVER_HOST + ":" + config.Settings.SERVER_PORT)
 }
 
