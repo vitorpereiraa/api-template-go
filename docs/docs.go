@@ -19,6 +19,9 @@ const docTemplate = `{
         "/todoList": {
             "post": {
                 "description": "Create a Todo List",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -29,7 +32,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "description": "Create todoList",
-                        "name": "tags",
+                        "name": "todoList",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -43,12 +46,113 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/dtos.TodoListDTO"
                         }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.HTTPError"
+                        }
+                    }
+                }
+            }
+        },
+        "/todoList/": {
+            "get": {
+                "description": "Find all todo lists",
+                "tags": [
+                    "todoList"
+                ],
+                "summary": "FindTodoLists",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dtos.TodoListDTO"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/todoList/{name}": {
+            "get": {
+                "description": "Find a todo list by Name",
+                "tags": [
+                    "todoList"
+                ],
+                "summary": "FindTodoListByName",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Todo List Name",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.TodoListDTO"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.HTTPError"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete a todo list by Name",
+                "tags": [
+                    "todoList"
+                ],
+                "summary": "DeleteTodoListByName",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Todo List Name",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.TodoListDTO"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.HTTPError"
+                        }
                     }
                 }
             }
         }
     },
     "definitions": {
+        "controllers.HTTPError": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 400
+                },
+                "message": {
+                    "type": "string",
+                    "example": "status bad request"
+                }
+            }
+        },
         "dtos.ItemDTO": {
             "type": "object",
             "properties": {
@@ -66,14 +170,14 @@ const docTemplate = `{
                 "description": {
                     "type": "string"
                 },
-                "id": {
-                    "type": "string"
-                },
                 "items": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/dtos.ItemDTO"
                     }
+                },
+                "name": {
+                    "type": "string"
                 }
             }
         }
@@ -86,7 +190,7 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "",
 	BasePath:         "",
 	Schemes:          []string{},
-	Title:            "Todo List API",
+	Title:            "",
 	Description:      "",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,

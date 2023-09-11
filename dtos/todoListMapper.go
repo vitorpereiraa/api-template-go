@@ -4,7 +4,7 @@ import "github.com/vitorpereira/api-template-go/domain"
 
 func TodoListToDto(todoList domain.TodoList) TodoListDTO {
 	return TodoListDTO{
-		ID:          todoList.ID(),
+		Name: todoList.Name(),
 		Description: todoList.Description(),
 		Items:       ItemListToDtoList(todoList.Items()),
 	}
@@ -18,5 +18,5 @@ func TodoListListToDtoList(todoListList []domain.TodoList) (todoListDtos []TodoL
 }
 
 func TodoListDtoToTodoList(todoListDTO TodoListDTO) domain.TodoList {
-	return domain.NewTodoList(todoListDTO.Description, ItemDtoListToItemList(todoListDTO.Items))
+	return domain.NewTodoList(todoListDTO.Name,todoListDTO.Description, ItemDtoListToItemList(todoListDTO.Items))
 }

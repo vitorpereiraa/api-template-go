@@ -1,23 +1,28 @@
 package domain
 
-import "github.com/google/uuid"
+import "gorm.io/gorm"
 
 type TodoList struct {
-	id          uuid.UUID
+	gorm.Model
+	name string
 	description string
 	items       []Item
 }
 
-func NewTodoList(descrition string, items []Item) TodoList {
+func NewTodoList(name string, descrition string, items []Item) TodoList {
 	return TodoList{
-		id:          uuid.New(),
+		name : name,
 		description: descrition,
 		items:       items,
 	}
 }
 
-func (t *TodoList) ID() string {
-	return t.id.String()
+func (t *TodoList) Name() string {
+	return t.name
+}
+
+func (t *TodoList) SetName(name string) {
+	t.name = name
 }
 
 func (t *TodoList) Description() string {

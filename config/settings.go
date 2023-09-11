@@ -1,19 +1,22 @@
 package config
 
 import (
-	"fmt"
-
 	"github.com/spf13/viper"
 )
 
-type settings struct {
+type Settings struct {
 	SERVER_PORT string `mapstructure:"SERVER_PORT"`
 	SERVER_HOST string `mapstructure:"SERVER_HOST"`
+
+	DB_HOST string `mapstructure:"DB_HOST"`
+	DB_DRIVER string `mapstructure:"DB_DRIVER"`
+	DB_USER string `mapstructure:"DB_USER"`
+	DB_PASSWORD string `mapstructure:"DB_PASSWORD"`
+	DB_NAME string `mapstructure:"DB_NAME"`
+	DB_PORT string `mapstructure:"DB_PORT"`
 }
 
-var Settings settings
-
-func loadSettings() {
+func LoadSettings() (s Settings, err error) {
 	vp := viper.New()
 
 	vp.SetConfigFile(".env")
@@ -22,10 +25,12 @@ func loadSettings() {
 	vp.AutomaticEnv()
 
 	if err := vp.ReadInConfig(); err != nil {
-		panic(fmt.Errorf("fatal error loading the settings file: %w", err))
+		return s, err
 	}
 
-	if err := vp.Unmarshal(&Settings); err != nil {
-		panic(fmt.Errorf("fatal error parsing the settings file: %w", err))
+	if err := vp.Unmarshal(&s); err != nil {
+		return s, err
 	}
+
+	return s, nil 
 }

@@ -10,12 +10,12 @@ type todoListRepository struct {
 	repo []domain.TodoList
 }
 
-func NewTodoListRepository() todoListRepository {
-	todoListRepository := todoListRepository{
+func NewTodoListRepository() *todoListRepository {
+	todoListRepository := &todoListRepository{
 		repo: []domain.TodoList{},
 	}
 
-	bootstrap(&todoListRepository)
+	bootstrap(todoListRepository)
 
 	return todoListRepository
 }
@@ -24,9 +24,9 @@ func (t *todoListRepository) FindTodoLists() []domain.TodoList {
 	return t.repo
 }
 
-func (t *todoListRepository) FindTodoListByID(id string) (domain.TodoList, error) {
+func (t *todoListRepository) FindTodoListByName(name string) (domain.TodoList, error) {
 	for i := 0; i < len(t.repo); i++ {
-		if t.repo[i].ID() == id {
+		if t.repo[i].Name() == name {
 			return t.repo[i], nil
 		}
 	}
@@ -38,11 +38,11 @@ func (t *todoListRepository) CreateTodoList(todoList domain.TodoList) (domain.To
 	return todoList, nil
 }
 
-func (t *todoListRepository) DeleteTodoListByID(id string) (domain.TodoList, error) {
+func (t *todoListRepository) DeleteTodoListByName(name string) (domain.TodoList, error) {
 	var todoList domain.TodoList
 
 	for i := 0; i < len(t.repo); i++ {
-		if t.repo[i].ID() == id {
+		if t.repo[i].Name() == name {
 			t.repo, todoList = remove(t.repo, i)
 			return todoList, nil
 		}
@@ -61,7 +61,7 @@ func bootstrap(todoListRepository *todoListRepository) {
 
 	items = append(items, domain.NewItem("Do Homework", "Until Tomorrow"))
 
-	var todoList domain.TodoList = domain.NewTodoList("School Todo List", items)
+	var todoList domain.TodoList = domain.NewTodoList("School Todo List", "School Tasks", items)
 
 	todoListRepository.repo = append(todoListRepository.repo, todoList)
 }

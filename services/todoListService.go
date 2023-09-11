@@ -20,8 +20,8 @@ func (s TodoListService) FindTodoLists() []dtos.TodoListDTO {
 	return dtos.TodoListListToDtoList(todoLists)
 }
 
-func (s TodoListService) FindTodoListByID(id string) (dtos.TodoListDTO, error) {
-	todoList, err := s.repo.FindTodoListByID(id)
+func (s TodoListService) FindTodoListByName(id string) (dtos.TodoListDTO, error) {
+	todoList, err := s.repo.FindTodoListByName(id)
 	return dtos.TodoListToDto(todoList), err
 }
 
@@ -31,7 +31,7 @@ func (s TodoListService) CreateTodoList(todoListDTO dtos.TodoListDTO) (dtos.Todo
 	return dtos.TodoListToDto(createdTodoList), err
 }
 
-func (s TodoListService) DeleteTodoListByID(id string) (dtos.TodoListDTO, error) {
-	todoList, err := s.repo.DeleteTodoListByID(id)
+func (s TodoListService) DeleteTodoListByName(id string) (dtos.TodoListDTO, error) {
+	todoList, err := s.repo.DeleteTodoListByName(id)
 	return dtos.TodoListToDto(todoList), err
 }

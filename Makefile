@@ -1,4 +1,4 @@
-run: clean build
+run: clean build docs
 	./api-template-go.exe
 
 build:
@@ -6,6 +6,12 @@ build:
 
 clean:
 	rm -f ./api-template-go.exe 
+
+docs: docs-clean
+	swag init ./
+
+docs-clean:
+	rm -rf ./docs/
 
 dr: docker-clean docker-build  
 	docker run -d -p 8080:8080 --name api-template-go api-template-go:dev
